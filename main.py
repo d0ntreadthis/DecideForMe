@@ -29,6 +29,12 @@ class ActivitiesLayout(BoxLayout):
 	pass
 
 
+class DecideBtn(Button):
+	# When pressed, this should highlight a random activity in the list
+	# for roughly 5 seconds?
+	pass
+
+
 class MainWidget(BoxLayout):
 	'''Returned when the app is run'''
 	pass
