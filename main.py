@@ -9,9 +9,12 @@ from kivy.lang import Builder
 from kivy.core.window import Window
 
 class ActivityInput(TextInput):
+	# Should have a method that will change the color of the background
+	# for 10 secs, then go back to default
 	pass
 
-class DeleteButton(Button):
+
+class DeleteBtn(Button):
 	# When pressed, this should delete and remove the activity layout it's in
 	# Have image of a bin on it
 	pass
@@ -24,14 +27,26 @@ class ActivityLayout(BoxLayout):
 
 
 class ActivitiesLayout(BoxLayout):
-	# Just a layout for all of the activity layouts to go
+	# A layout for all of the activity layouts to go
 	# Will be vertical
+	pass
+
+
+class AddBtn(Button):
+	# When pressed, will add an activity layout to the bottom of the
+	# activities layout
 	pass
 
 
 class DecideBtn(Button):
 	# When pressed, this should highlight a random activity in the list
 	# for roughly 5 seconds?
+	pass
+
+
+class MenuLayout(BoxLayout):
+	# A layout for the menu buttons
+	# Will be horizontal
 	pass
 
 
