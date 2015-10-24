@@ -1,0 +1,71 @@
+#:kivy 1.9.0
+
+<Button>:
+	background_normal: ''
+	background_color: 0, 0, .2, 1
+
+	text_size: self.size
+	font_size: '20sp'
+	valign: 'middle'
+	halign: 'center'
+
+
+<ActivityInput>:
+	hint_text: "Enter the activity name"
+	font_size: '20sp'
+	multiline: False
+
+
+<DeleteBtn>:
+	size_hint: .2, 1
+	text: "Del"
+
+
+<ActivityLayout>:
+	orientation: 'horizontal'
+
+	ActivityInput:
+	DeleteBtn:
+
+
+<ActivitiesLayout>:
+	orientation: 'vertical'
+	spacing: 10
+
+	ActivityLayout:
+	ActivityLayout:
+
+
+<AddBtn>:
+	text: "Add new activity"
+
+
+<DecideBtn>:
+	text: "Decide for me!"
+
+
+<MenuLayout>:
+	orientation: 'horizontal'
+	spacing: 2
+
+	AddBtn:
+	DecideBtn:
+
+
+
+<MainWidget>:
+	orientation: 'vertical'
+	spacing: 10
+
+	canvas:
+		Color:
+			rgba: 1, 1, 1
+
+		Rectangle:
+			pos: self.pos
+			size: self.size
+
+	ActivitiesLayout:
+
+	MenuLayout:
+		size_hint: 1, 0.15
