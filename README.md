@@ -7,6 +7,6 @@ the name of an activity in the list which the user can then
 go off and do.
 
 # ---------------------Spec----------------------------------------
-# User should be able to add and remote activities from the list
+# User should be able to add and remove activities from the list
 # The user should be able to edit any activity's name
 # -----------------------------------------------------------------
