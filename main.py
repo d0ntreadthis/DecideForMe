@@ -9,11 +9,30 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.button import Button
 from kivy.lang import Builder
 from kivy.core.window import Window
+from kivy.graphics import Color, Rectangle
+from kivy.graphics.instructions import InstructionGroup
+from kivy.clock import Clock
+import random
+
 
 class ActivityInput(TextInput):
 	# Should have a method that will change the color of the background
 	# for 10 secs, then go back to default
-	pass
+	
+	def highlight(self):
+		# highlight an instance of ActivityInput
+
+		with self.canvas.after:
+			Color(0, 1, 0, 0.2)
+			Rectangle(pos=self.pos, size=self.size)
+
+		# Trigger the unhighlight function after 3.5secs
+		Clock.schedule_once(self.unhighlight, 3.5)
+
+	def unhighlight(self, dt):
+		with self.canvas.after:
+			self.canvas.after.clear()
+
 
 
 class DeleteBtn(Button):
@@ -28,6 +47,10 @@ class ActivityLayout(BoxLayout):
 	def __init__(self, **kwargs):
 		super(ActivityLayout, self).__init__(**kwargs)
 		ActivitiesLayout.childlist.append(self)
+
+	def getactinput(self):
+		# Highlight the ActivityInput of the ActivityLayout
+		self.children[1].highlight()
 	
 
 class ActivitiesLayout(GridLayout):
@@ -40,6 +63,11 @@ class ActivitiesLayout(GridLayout):
 	def delactivity(self, toremove):
 		self.remove_widget(toremove)
 		ActivitiesLayout.childlist.remove(toremove)
+
+	def pickchild(self):
+		# Choose a random child from the childlist
+		selection = random.choice(ActivitiesLayout.childlist)
+		selection.getactinput()
 
 
 class MyScrollView(ScrollView):
@@ -55,7 +83,25 @@ class AddBtn(Button):
 class DecideBtn(Button):
 	# When pressed, this should highlight a random activity in the list
 	# for roughly 5 seconds?
-	pass
+
+	def __init__(self, **kwargs):
+		super(DecideBtn, self).__init__(**kwargs)
+		self.pressed = False
+	
+	def callback(self):
+		# To prevent the callback from running when an activity is
+		# already highlighted
+
+		if self.pressed == True:
+			pass
+
+		elif self.pressed == False:
+			self.pressed = True
+			ActivitiesLayout.al.pickchild()
+			Clock.schedule_once(self.pressedfunc, 3.5)
+
+	def pressedfunc(self, dt):
+		self.pressed = False
 
 
 class MenuLayout(BoxLayout):
@@ -67,6 +113,7 @@ class MenuLayout(BoxLayout):
 class MainWidget(BoxLayout):
 	'''Returned when the app is run'''
 	pass
+
 
 class MainApp(App):
 
