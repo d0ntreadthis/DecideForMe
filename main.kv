@@ -19,41 +19,65 @@
 <DeleteBtn>:
 	size_hint: .2, 1
 	text: "Del"
+	on_press: self.callback()
 
 
 <ActivityLayout>:
 	orientation: 'horizontal'
+	height: 50
+	size_hint: 1, None
 
 	ActivityInput:
+		id: activityinput
 	DeleteBtn:
+		id: deletebtn
 
 
 <ActivitiesLayout>:
-	orientation: 'vertical'
+	id: activitieslayout
+	cols: 1
 	spacing: 10
+	size_hint: 1, None
+	height: self.minimum_height
+	do_scroll_x: False
 
 	ActivityLayout:
 	ActivityLayout:
+
+
+<MyScrollView>:
+
+	ActivitiesLayout:
+		id: activitieslayout
 
 
 <AddBtn>:
 	text: "Add new activity"
+	on_press: self.callback()
 
 
 <DecideBtn>:
 	text: "Decide for me!"
+	on_press: self.callback()
 
 
 <MenuLayout>:
 	orientation: 'horizontal'
 	spacing: 2
+	size_hint: 1, 0.15
 
 	AddBtn:
+		id: addbtn
 	DecideBtn:
+		id: decidebtn
 
 
 
 <MainWidget>:
+	id: mainwidget
+	menulayout: menulayout
+	myscrollview: myscrollview
+
 	orientation: 'vertical'
 	spacing: 10
 
@@ -65,7 +89,7 @@
 			pos: self.pos
 			size: self.size
 
-	ActivitiesLayout:
-
+	MyScrollView:
+		id: myscrollview
 	MenuLayout:
-		size_hint: 1, 0.15
+		id: menulayout
