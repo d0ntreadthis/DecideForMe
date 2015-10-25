@@ -21,18 +21,13 @@ class ActivityInput(TextInput):
 	
 	def highlight(self):
 		# highlight an instance of ActivityInput
-
 		with self.canvas.after:
 			Color(0, 1, 0, 0.2)
 			Rectangle(pos=self.pos, size=self.size)
 
-		# Trigger the unhighlight function after 2secs
-		Clock.schedule_once(self.unhighlight, 2)
-
-	def unhighlight(self, dt):
+	def unhighlight(self, *ignore):
 		with self.canvas.after:
 			self.canvas.after.clear()
-
 
 
 class DeleteBtn(Button):
@@ -72,11 +67,11 @@ class ActivitiesLayout(GridLayout):
 		# Choose a random child from the childlist
 		selection = 0
 
+		# Let the same answer be selected more than once
 		if self.randomness() == False:
 			selection = random.choice(ActivitiesLayout.childlist)
 			selection.getactinput()
 			self.lastselection = selection
-			return None
 
 		while self.randomness() == True:
 			selection = random.choice(ActivitiesLayout.childlist)
@@ -84,6 +79,8 @@ class ActivitiesLayout(GridLayout):
 				selection.getactinput()
 				self.lastselection = selection
 				break
+
+		return selection
 
 	def randomness(self):
 		return len(ActivitiesLayout.childlist) > 3
@@ -105,22 +102,13 @@ class DecideBtn(Button):
 
 	def __init__(self, **kwargs):
 		super(DecideBtn, self).__init__(**kwargs)
-		self.pressed = False
+		#self.pressed = False
+		self.lastselection = 0
 	
 	def callback(self):
-		# To prevent the callback from running when an activity is
-		# already highlighted
-
-		if self.pressed == True:
-			pass
-
-		elif self.pressed == False:
-			self.pressed = True
-			ActivitiesLayout.al.pickchild()
-			Clock.schedule_once(self.pressedfunc, 2)
-
-	def pressedfunc(self, dt):
-		self.pressed = False
+		try: self.lastselection.children[1].unhighlight()
+		except AttributeError: pass
+		self.lastselection = ActivitiesLayout.al.pickchild()
 
 
 class MenuLayout(BoxLayout):
