@@ -17,15 +17,23 @@ class ActivityInput(TextInput):
 
 
 class DeleteBtn(Button):
-	# When pressed, this should delete and remove the activity layout it's in
-	# Have image of a bin on it
-	pass
+	# Should have an image of a bin on it, rather than the word del
+	
+	def callback(self):
+		self.parent.deleteactivity()
 
 
 class ActivityLayout(BoxLayout):
-	# Contains a text input for the activity name, and a delete button
-	# Will be horizontal
-	pass
+
+	childlist = [] # To keep a reference of all instances
+
+	def __init__(self, **kwargs):
+		super(ActivityLayout, self).__init__(**kwargs)
+		ActivityLayout.childlist.append(self)
+	
+	def deleteactivity(self):
+		self.parent.remove_widget(self)
+		ActivityLayout.childlist.remove(self)
 
 
 class ActivitiesLayout(GridLayout):
