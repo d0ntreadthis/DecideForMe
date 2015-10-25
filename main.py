@@ -20,26 +20,26 @@ class DeleteBtn(Button):
 	# Should have an image of a bin on it, rather than the word del
 	
 	def callback(self):
-		self.parent.deleteactivity()
+		ActivitiesLayout.al.delactivity(toremove=self.parent)
 
 
 class ActivityLayout(BoxLayout):
 
-	childlist = [] # To keep a reference of all instances
-
 	def __init__(self, **kwargs):
 		super(ActivityLayout, self).__init__(**kwargs)
-		ActivityLayout.childlist.append(self)
+		ActivitiesLayout.childlist.append(self)
 	
-	def deleteactivity(self):
-		self.parent.remove_widget(self)
-		ActivityLayout.childlist.remove(self)
-
 
 class ActivitiesLayout(GridLayout):
-	# A layout for all of the activity layouts to go
-	# Will be vertical
-	pass
+
+	childlist = [] # To keep a reference of all children
+
+	def addactivity(self):
+		self.add_widget(ActivityLayout())
+
+	def delactivity(self, toremove):
+		self.remove_widget(toremove)
+		ActivitiesLayout.childlist.remove(toremove)
 
 
 class MyScrollView(ScrollView):
@@ -47,9 +47,9 @@ class MyScrollView(ScrollView):
 
 
 class AddBtn(Button):
-	# When pressed, will add an activity layout to the bottom of the
-	# activities layout
-	pass
+
+	def callback(self):
+		ActivitiesLayout.al.addactivity()
 
 
 class DecideBtn(Button):
@@ -68,12 +68,16 @@ class MainWidget(BoxLayout):
 	'''Returned when the app is run'''
 	pass
 
-
 class MainApp(App):
 
 	def build(self):
+		# Creates a reference to the activitieslayout within ActivitiesLayout
+		# So we can access it from anywhere
+		mainwig = MainWidget()
+		ActivitiesLayout.al = mainwig.ids.myscrollview.ids.activitieslayout
+
 		#Window.size = (x, y)
-		return MainWidget()
+		return mainwig
 
 if __name__ == '__main__':
 	MainApp().run()
