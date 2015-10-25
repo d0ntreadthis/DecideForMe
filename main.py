@@ -22,7 +22,7 @@ class ActivityInput(TextInput):
 	def highlight(self):
 		# highlight an instance of ActivityInput
 		with self.canvas.after:
-			Color(0.529,0.792,0.435, 0.3)
+			Color(0.573,0.596,0.765, 0.3)
 			Rectangle(pos=self.pos, size=self.size)
 
 	def unhighlight(self, *ignore):
