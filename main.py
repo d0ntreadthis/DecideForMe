@@ -69,7 +69,3 @@ class MainApp(App):
 
 if __name__ == '__main__':
 	MainApp().run()
-
-
-# MenuLayout:
-#		size_hint: 1, 0.15
