@@ -2,7 +2,9 @@
 
 <Button>:
 	background_normal: ''
-	background_color: 0, 0, .2, 1
+	#background_color: 0.376,0.827,0.208, 1
+	background_color: 0.471,0.122,0.373, 1
+
 
 	text_size: self.size
 	font_size: '20sp'
@@ -12,8 +14,10 @@
 
 <ActivityInput>:
 	hint_text: "Enter the activity name"
-	font_size: '20sp'
+	font_size: '30sp'
 	multiline: False
+	#foreground_color: 0.725,0.694,0.012, 1
+	foreground_color: 0.431,0.039,0.098, 1
 
 
 <DeleteBtn>:
@@ -72,18 +76,19 @@
 		id: decidebtn
 
 
-
 <MainWidget>:
 	id: mainwidget
 	menulayout: menulayout
 	myscrollview: myscrollview
+	padding: 10
 
 	orientation: 'vertical'
 	spacing: 10
 
 	canvas:
 		Color:
-			rgba: 1, 1, 1
+			#rgba: 0.812,0.957,0.392, 1
+			rgba: 0.89,0.961,0.686, 1
 
 		Rectangle:
 			pos: self.pos
