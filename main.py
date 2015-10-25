@@ -9,11 +9,25 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.button import Button
 from kivy.lang import Builder
 from kivy.core.window import Window
+from kivy.graphics import Color, Rectangle
+from kivy.graphics.instructions import InstructionGroup
+from kivy.clock import Clock
+import random
+
 
 class ActivityInput(TextInput):
 	# Should have a method that will change the color of the background
 	# for 10 secs, then go back to default
-	pass
+	
+	def highlight(self):
+		# highlight an instance of ActivityInput
+		with self.canvas.after:
+			Color(0, 1, 0, 0.2)
+			Rectangle(pos=self.pos, size=self.size)
+
+	def unhighlight(self, *ignore):
+		with self.canvas.after:
+			self.canvas.after.clear()
 
 
 class DeleteBtn(Button):
@@ -28,11 +42,19 @@ class ActivityLayout(BoxLayout):
 	def __init__(self, **kwargs):
 		super(ActivityLayout, self).__init__(**kwargs)
 		ActivitiesLayout.childlist.append(self)
+
+	def getactinput(self):
+		# Highlight the ActivityInput of the ActivityLayout
+		self.children[1].highlight()
 	
 
 class ActivitiesLayout(GridLayout):
 
 	childlist = [] # To keep a reference of all children
+
+	def __init__(self, **kwargs):
+		super(ActivitiesLayout, self).__init__(**kwargs)
+		self.lastselection = 0
 
 	def addactivity(self):
 		self.add_widget(ActivityLayout())
@@ -40,6 +62,28 @@ class ActivitiesLayout(GridLayout):
 	def delactivity(self, toremove):
 		self.remove_widget(toremove)
 		ActivitiesLayout.childlist.remove(toremove)
+
+	def pickchild(self):
+		# Choose a random child from the childlist
+		selection = 0
+
+		# Let the same answer be selected more than once
+		if self.randomness() == False:
+			selection = random.choice(ActivitiesLayout.childlist)
+			selection.getactinput()
+			self.lastselection = selection
+
+		while self.randomness() == True:
+			selection = random.choice(ActivitiesLayout.childlist)
+			if selection != self.lastselection:
+				selection.getactinput()
+				self.lastselection = selection
+				break
+
+		return selection
+
+	def randomness(self):
+		return len(ActivitiesLayout.childlist) > 3
 
 
 class MyScrollView(ScrollView):
@@ -55,7 +99,16 @@ class AddBtn(Button):
 class DecideBtn(Button):
 	# When pressed, this should highlight a random activity in the list
 	# for roughly 5 seconds?
-	pass
+
+	def __init__(self, **kwargs):
+		super(DecideBtn, self).__init__(**kwargs)
+		#self.pressed = False
+		self.lastselection = 0
+	
+	def callback(self):
+		try: self.lastselection.children[1].unhighlight()
+		except AttributeError: pass
+		self.lastselection = ActivitiesLayout.al.pickchild()
 
 
 class MenuLayout(BoxLayout):
@@ -67,6 +120,7 @@ class MenuLayout(BoxLayout):
 class MainWidget(BoxLayout):
 	'''Returned when the app is run'''
 	pass
+
 
 class MainApp(App):
 
