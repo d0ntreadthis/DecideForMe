@@ -26,8 +26,8 @@ class ActivityInput(TextInput):
 			Color(0, 1, 0, 0.2)
 			Rectangle(pos=self.pos, size=self.size)
 
-		# Trigger the unhighlight function after 3.5secs
-		Clock.schedule_once(self.unhighlight, 3.5)
+		# Trigger the unhighlight function after 2secs
+		Clock.schedule_once(self.unhighlight, 2)
 
 	def unhighlight(self, dt):
 		with self.canvas.after:
@@ -57,6 +57,10 @@ class ActivitiesLayout(GridLayout):
 
 	childlist = [] # To keep a reference of all children
 
+	def __init__(self, **kwargs):
+		super(ActivitiesLayout, self).__init__(**kwargs)
+		self.lastselection = 0
+
 	def addactivity(self):
 		self.add_widget(ActivityLayout())
 
@@ -66,8 +70,23 @@ class ActivitiesLayout(GridLayout):
 
 	def pickchild(self):
 		# Choose a random child from the childlist
-		selection = random.choice(ActivitiesLayout.childlist)
-		selection.getactinput()
+		selection = 0
+
+		if self.randomness() == False:
+			selection = random.choice(ActivitiesLayout.childlist)
+			selection.getactinput()
+			self.lastselection = selection
+			return None
+
+		while self.randomness() == True:
+			selection = random.choice(ActivitiesLayout.childlist)
+			if selection != self.lastselection:
+				selection.getactinput()
+				self.lastselection = selection
+				break
+
+	def randomness(self):
+		return len(ActivitiesLayout.childlist) > 3
 
 
 class MyScrollView(ScrollView):
@@ -98,7 +117,7 @@ class DecideBtn(Button):
 		elif self.pressed == False:
 			self.pressed = True
 			ActivitiesLayout.al.pickchild()
-			Clock.schedule_once(self.pressedfunc, 3.5)
+			Clock.schedule_once(self.pressedfunc, 2)
 
 	def pressedfunc(self, dt):
 		self.pressed = False
